@@ -1,247 +1,255 @@
 ![Repository Banner](./images/project-banner.png)
-# Case 002 - Suspicious USB Activity Investigation
+# Case 002 – Suspicious USB Activity Investigation
 
-## Overview
+## Executive Summary
 
-This investigation examines potential unauthorized use of removable media on a Windows workstation.
+This investigation was conducted to determine whether a USB storage device had been connected to a Windows workstation and whether sensitive documents were copied to removable media.
 
-The objective was to determine whether a USB storage device was connected to the system, identify the device involved, and analyze evidence indicating whether sensitive files were copied to external media.
+Using native Windows forensic artifacts and Autopsy, evidence was collected and analyzed to identify USB activity, examine file metadata, verify file integrity, and reconstruct a timeline of events.
 
-This investigation utilized native Windows forensic artifacts and Autopsy to perform timeline analysis, metadata examination, and file correlation.
+The investigation confirmed that a Kingston DataTraveler 3.0 USB device was connected to the system and that multiple documents were copied to external storage. Hash analysis verified that the copied files were identical to their original counterparts.
 
 ---
 
 ## Investigation Objectives
 
-- Identify connected USB devices
-- Review Windows event logs for USB activity
-- Analyze file metadata
-- Compare original files and copied files
-- Verify file integrity using cryptographic hashes
-- Reconstruct a timeline of events
-- Determine whether file copying likely occurred
+The objectives of this investigation were to:
 
----
-
-## Tools Used
-
-| Tool | Purpose |
-|--------|--------|
-| Windows Event Viewer | USB activity analysis |
-| Device Manager | Device identification |
-| PowerShell | File timeline collection |
-| Autopsy 4.23.1 | Forensic analysis |
-| Windows File Properties | Metadata review |
+* Identify USB devices connected to the workstation
+* Analyze Windows event logs for device activity
+* Examine document metadata and timestamps
+* Compare original files with copied versions
+* Verify file integrity using cryptographic hashes
+* Reconstruct a timeline of user activity
+* Determine whether evidence supports file transfer to removable media
 
 ---
 
 ## Scenario
 
-A company suspected that an employee connected an unauthorized USB storage device and copied potentially sensitive documents.
+An organization suspected that an employee connected an unauthorized USB storage device to a workstation and copied potentially sensitive files.
 
 The investigator was tasked with determining:
 
-- Whether a USB device was connected
-- What device was used
-- Whether files were copied
-- Whether document modifications occurred before transfer
+* Whether a USB device was connected
+* Which device was used
+* Whether files were copied to the device
+* Whether any files were modified prior to transfer
 
 ---
 
-# Evidence Collected
+## Evidence Collected
 
-## Documents
+### Documents
 
-- Employee-Salaries.xlsx
-- Quarterly-Budget.xlsx
-- Executive-Notes.docx
+* Employee-Salaries.xlsx
+* Quarterly-Budget.xlsx
+* Executive-Notes.docx
 
-## USB Device
+### System Artifacts
 
-- Kingston DataTraveler 3.0 USB Device
+* Windows Event Viewer Logs
+* Device Manager USB Device Information
+* PowerShell File Timeline Output
+* File Metadata Properties
 
----
+### Forensic Tools
 
-# Evidence Analysis
-
-## USB Device Identification
-
-Device Manager identified:
-
-Kingston DataTraveler 3.0 USB Device
-
-Event Viewer logs confirmed Plug-and-Play activity associated with the device.
+* Autopsy 4.23.1
+* Windows Event Viewer
+* Device Manager
+* Windows PowerShell
 
 ---
 
-## Event Log Analysis
+## Analysis
 
-### Relevant Event IDs
+### USB Device Identification
 
-| Event ID | Description |
-|-----------|-----------|
-| 2003 | Driver loading for newly discovered device |
-| 2100 | PnP device activity |
-| 2102 | Device management operation |
+Device Manager identified a connected removable storage device:
 
-### Observed Times
+**Kingston DataTraveler 3.0 USB Device**
 
-09:26:06 AM
-
-09:26:17 AM
-
-09:26:18 AM
-
-These events confirm USB device initialization and successful connection.
+This device was subsequently correlated with Windows event log activity.
 
 ---
 
-## Metadata Analysis
+### Event Log Analysis
 
-### Employee-Salaries.xlsx
+Windows Event Viewer contained records associated with USB device initialization and Plug-and-Play operations.
 
-Created:
-09:01:46 AM
+Relevant events included:
 
-Modified:
-09:01:47 AM
+| Event ID | Description                                |
+| -------- | ------------------------------------------ |
+| 2003     | Driver loading for newly discovered device |
+| 2100     | Plug-and-Play device activity              |
+| 2102     | Device management operation                |
 
-### Quarterly-Budget.xlsx
+Observed timestamps:
 
-Created:
-09:02:15 AM
+* 09:26:06 AM
+* 09:26:17 AM
+* 09:26:18 AM
 
-Modified:
-09:02:15 AM
-
-### Executive-Notes.docx
-
-Created:
-09:02:51 AM
-
-Modified:
-09:28:20 AM
+These events confirmed successful device detection and initialization.
 
 ---
 
-# Autopsy Analysis
+### Metadata Analysis
 
-Autopsy was used to compare original files against copied versions located within the USB evidence set.
+File metadata revealed that all investigated documents existed prior to USB activity.
 
-## Hash Verification
+#### Employee-Salaries.xlsx
 
-Original and copied files produced identical cryptographic hashes.
+| Attribute | Timestamp   |
+| --------- | ----------- |
+| Created   | 09:01:46 AM |
+| Modified  | 09:01:47 AM |
 
-Example:
+#### Quarterly-Budget.xlsx
 
-MD5:
-d939bb8cf9c682865b5adaafead68167
+| Attribute | Timestamp   |
+| --------- | ----------- |
+| Created   | 09:02:15 AM |
+| Modified  | 09:02:15 AM |
 
-SHA256:
-e4b9616be8023ced27418db14dda730c9aa58d6baa5ce54f51d6a32b6d969b7b
+#### Executive-Notes.docx
 
-This indicates the copied file contents were identical to the source file.
+| Attribute | Timestamp   |
+| --------- | ----------- |
+| Created   | 09:02:51 AM |
+| Modified  | 09:28:20 AM |
 
----
-
-# Timeline Reconstruction
-
-| Time | Event |
-|--------|--------|
-| 09:01:46 | Employee-Salaries.xlsx created |
-| 09:02:15 | Quarterly-Budget.xlsx created |
-| 09:02:51 | Executive-Notes.docx created |
-| 09:26:06 | USB activity begins |
-| 09:26:17 | Driver load event recorded |
-| 09:26:18 | Additional USB events recorded |
-| 09:28:20 | Executive-Notes.docx modified |
-| 09:45:17 | USB copies created |
-| 09:45:18 | Additional USB file activity |
+The metadata established that the files were present on the workstation before the USB device was connected.
 
 ---
 
-# Findings
+### Autopsy Analysis
 
-## Finding 1
+Autopsy was used to analyze both the original files and the copied versions stored within the USB evidence set.
 
-A Kingston DataTraveler 3.0 USB storage device was connected to the system.
+The analysis identified:
 
-Evidence:
-- Device Manager
-- Event Viewer
+* Matching file names
+* Matching file sizes
+* Matching cryptographic hashes
+* Separate storage locations
+* Distinct creation timestamps
 
----
+Hash verification confirmed that the copied files were identical to their original counterparts.
 
-## Finding 2
-
-Windows successfully initialized and mounted the device.
-
-Evidence:
-- Event IDs 2003
-- Event IDs 2100
-- Event IDs 2102
+This evidence strongly supports that the files located on the USB device were copied from the workstation.
 
 ---
 
-## Finding 3
+## Timeline Reconstruction
 
-The investigated files existed before USB activity occurred.
+| Time     | Event                                  |
+| -------- | -------------------------------------- |
+| 09:01:46 | Employee-Salaries.xlsx created         |
+| 09:02:15 | Quarterly-Budget.xlsx created          |
+| 09:02:51 | Executive-Notes.docx created           |
+| 09:26:06 | USB activity begins                    |
+| 09:26:17 | Driver load event recorded             |
+| 09:26:18 | Additional USB initialization activity |
+| 09:28:20 | Executive-Notes.docx modified          |
+| 09:45:17 | USB copies created                     |
+| 09:45:18 | Additional file activity recorded      |
 
-Evidence:
-- File metadata
-- PowerShell timeline output
-
----
-
-## Finding 4
-
-Files were duplicated to removable media.
-
-Evidence:
-- Matching file hashes
-- Separate storage locations
-- Different creation timestamps
+The timeline demonstrates that the documents existed prior to USB activity and that copied versions appeared after device connection.
 
 ---
 
-## Finding 5
+## Findings
 
-Executive-Notes.docx was modified before being copied.
+### Finding 1
 
-Evidence:
-- Metadata timestamps
-- Autopsy timeline
+A removable storage device was connected to the workstation.
 
----
+**Evidence:**
 
-# Conclusion
-
-The investigation confirmed the connection of a Kingston DataTraveler 3.0 USB device to the workstation.
-
-Forensic analysis showed that multiple documents existed prior to USB activity and were later duplicated to removable media. Hash verification confirmed the copied files were identical to their original counterparts.
-
-The available evidence supports the conclusion that files were copied to external storage after document creation and modification activity occurred.
+* Device Manager
+* Event Viewer Logs
 
 ---
 
-# Lessons Learned
+### Finding 2
 
-- USB activity can be reconstructed using Windows event logs.
-- Metadata timestamps provide valuable context when building timelines.
-- Hash analysis is critical when validating copied files.
-- Autopsy provides an efficient method for correlating timestamps and metadata.
-- Logical file acquisitions may alter certain timestamps and should be documented during analysis.
+The connected device was identified as a Kingston DataTraveler 3.0 USB device.
+
+**Evidence:**
+
+* Device Manager
+* Event Viewer Device Information
 
 ---
 
-# Skills Demonstrated
+### Finding 3
 
-- Digital Forensics
-- USB Artifact Analysis
-- Event Log Analysis
-- Metadata Analysis
-- Timeline Reconstruction
-- Hash Verification
-- Evidence Documentation
-- Autopsy
-- Windows Forensics
+Sensitive documents existed on the workstation before USB activity occurred.
+
+**Evidence:**
+
+* File Metadata
+* PowerShell Timeline
+
+---
+
+### Finding 4
+
+The investigated files were copied to removable media.
+
+**Evidence:**
+
+* Matching hashes
+* Matching file sizes
+* Separate storage locations
+* Distinct creation timestamps
+
+---
+
+### Finding 5
+
+Executive-Notes.docx was modified before the copied version appeared within the USB evidence set.
+
+**Evidence:**
+
+* Metadata timestamps
+* Autopsy timeline analysis
+
+---
+
+## Conclusion
+
+The investigation confirmed that a Kingston DataTraveler 3.0 USB storage device was connected to the workstation.
+
+Analysis of Windows event logs, file metadata, and Autopsy artifacts demonstrated that multiple documents existed on the workstation prior to USB activity and were subsequently duplicated to removable media. Hash verification confirmed the copied files were identical to their original versions.
+
+Based on the available evidence, the findings support the conclusion that files were copied from the workstation to external storage after document creation and modification activity occurred.
+
+---
+
+## Lessons Learned
+
+* USB activity can be reconstructed using Windows event logs and device artifacts.
+* File metadata provides valuable context during forensic investigations.
+* Timeline reconstruction helps correlate user actions and system activity.
+* Hash analysis is critical for validating copied files.
+* Autopsy provides an effective platform for metadata analysis and evidence correlation.
+* Proper documentation is essential for maintaining investigative integrity.
+
+---
+
+## Skills Demonstrated
+
+* Digital Forensics
+* USB Artifact Analysis
+* Event Log Analysis
+* Metadata Analysis
+* Timeline Reconstruction
+* Hash Verification
+* Evidence Documentation
+* Autopsy
+* Windows Forensics
+* Incident Investigation
