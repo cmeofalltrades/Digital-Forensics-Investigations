@@ -15,7 +15,7 @@
 
 # Executive Summary
 
-A forensic examination was conducted to investigate document activity associated with a simulated unauthorized USB usage scenario. The objective was to identify file creation and modification activity and determine whether evidence existed to support user interaction with sensitive documents.
+A forensic examination was conducted to investigate document activity within a simulated evidence set. The objective was to identify file creation and modification activity and determine whether evidence existed to support user interaction with sensitive documents.
 
 A logical file set containing three business-related documents was analyzed using Autopsy. Metadata analysis identified modification activity on two of the three documents. Timeline reconstruction established a sequence of file creation and modification events.
 
