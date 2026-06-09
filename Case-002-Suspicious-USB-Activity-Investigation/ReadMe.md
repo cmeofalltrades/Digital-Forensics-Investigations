@@ -1,3 +1,4 @@
+![Repository Banner](./images/project-banner.png)
 # Case 002 - Suspicious USB Activity Investigation
 
 ## Overview
