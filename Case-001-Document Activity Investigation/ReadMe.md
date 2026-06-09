@@ -1,4 +1,4 @@
-![Repository Banner](./screenshots/project-banner.png)
+![Repository Banner](./images/project-banner.png)
 # Case 001 – Document Activity Investigation
 
 **Project Type:** Digital Forensics Investigation
