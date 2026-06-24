@@ -1,0 +1,152 @@
+Case 003 – Browser History & Download Activity Investigation
+Executive Summary
+
+This investigation examined browser artifacts and downloaded files on a Windows 11 system to determine whether a user accessed websites and downloaded files using Google Chrome.
+
+The investigation focused on browser history, download records, file metadata, and cryptographic hashes. Evidence confirmed that multiple files were downloaded through Chrome and remained present on the system at the time of analysis.
+
+Scenario
+
+A user is suspected of downloading files from the internet. The objective is to determine:
+
+Which browser was used
+What files were downloaded
+When the downloads occurred
+Whether the files still exist
+Whether file integrity can be verified
+Tools Used
+Tool	Purpose
+Google Chrome	Source of browser artifacts
+File Explorer	Evidence collection
+PowerShell	Metadata and hash analysis
+Windows 11	Investigation platform
+Evidence Collection
+Browser Artifact Location
+%LOCALAPPDATA%\Google\Chrome\User Data\Default\History
+
+The Chrome History database was identified and preserved as evidence.
+
+Evidence Files
+Evidence Item	Description
+History	Chrome browsing and download database
+Downloads Folder	Downloaded files
+InvestigationNotes.txt	Test file created during investigation
+PowerShell Output	Metadata collection
+SHA256 Hashes	File integrity verification
+Investigation Steps
+1. Browser Activity
+
+Google Chrome was identified as the browser used during the investigation.
+
+The Chrome History database was located within the user's profile directory.
+
+Screenshot:
+
+screenshots/chrome-history-file.png
+2. Download History Review
+
+Chrome download history was examined to identify downloaded files.
+
+Evidence showed:
+
+PDF file download
+ZIP file download
+
+Screenshot:
+
+screenshots/browser-downloads.png
+3. Downloads Folder Analysis
+
+The Downloads directory was examined to verify that the downloaded files remained present on the system.
+
+Observed files:
+
+File Name	Type
+G162691946_78d2eb5c69934a7ca6e8d9ba28f8724c.pdf	PDF
+cmeofalltrades power-bi-portfolio main Project-02-Device-Compliance.zip	ZIP
+InvestigationNotes.txt	Text File
+
+Screenshot:
+
+screenshots/downloads-folder.png
+4. Metadata Analysis
+
+PowerShell was used to review file creation and modification timestamps.
+
+Get-ChildItem "$env:USERPROFILE\Downloads" |
+Sort-Object CreationTime -Descending |
+Select-Object -First 10 Name, CreationTime, LastWriteTime
+
+Results:
+
+File	Creation Time
+ZIP File	06/24/2026 09:44:26
+PDF File	06/24/2026 09:49:34
+InvestigationNotes.txt	06/24/2026 09:50:53
+
+Screenshot:
+
+screenshots/download-metadata.png
+5. Hash Verification
+
+SHA256 hashes were generated to establish file integrity.
+
+PDF File
+1987DC08C54CB43302A7D4DB792D2DEDED36B4303CA36AE71947D1E27C5C739C
+ZIP File
+E69396D734934D2963181251661DC4FF37668247C4C3ADD90C5BCE9F2CF4D78E
+
+Screenshot:
+
+screenshots/file-hashes.png
+Timeline of Events
+Time	Event
+09:44:26	ZIP file downloaded
+09:49:34	PDF file downloaded
+09:50:53	InvestigationNotes.txt created
+Investigation Time	Evidence collected and analyzed
+Findings
+Finding 1
+
+Google Chrome was used to download files from the internet.
+
+Finding 2
+
+Two downloaded files were identified:
+
+One PDF document
+One ZIP archive
+Finding 3
+
+All downloaded files remained present within the Downloads folder during analysis.
+
+Finding 4
+
+Metadata timestamps established a sequence of activity showing the ZIP file was downloaded before the PDF file.
+
+Finding 5
+
+SHA256 hashes were successfully generated, allowing future verification of file integrity.
+
+Conclusion
+
+The investigation successfully identified browser download activity through Chrome artifacts and file system evidence.
+
+Analysis confirmed that a ZIP archive and PDF document were downloaded using Google Chrome and remained accessible within the Downloads directory. Metadata timestamps established a clear timeline of user activity, while SHA256 hashes provided integrity verification for the downloaded files.
+
+The evidence demonstrates how browser artifacts, file metadata, and hashing techniques can be used together to reconstruct user activity during a forensic investigation.
+
+Lessons Learned
+Browser history databases contain valuable investigative evidence.
+Download records can be correlated with file system artifacts.
+Metadata provides a timeline of user activity.
+SHA256 hashing is essential for evidence integrity verification.
+Multiple artifact sources should be correlated to support investigative findings.
+Skills Demonstrated
+Browser Forensics
+Evidence Preservation
+Metadata Analysis
+File Integrity Verification
+Timeline Reconstruction
+PowerShell Investigation Techniques
+Digital Evidence Documentation
