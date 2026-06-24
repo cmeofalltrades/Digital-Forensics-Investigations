@@ -1,6 +1,6 @@
 ![Repository Banner](./images/project-banner.png)
 
-Case 003 – Browser History & Download Activity Investigation
+#Case 003 – Browser History & Download Activity Investigation
 Executive Summary
 
 This investigation examined browser artifacts and downloaded files on a Windows 11 system to determine whether a user accessed websites and downloaded files using Google Chrome.
